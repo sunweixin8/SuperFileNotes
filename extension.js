@@ -1,36 +1,66 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-
-/**
- * @param {vscode.ExtensionContext} context
- */
 function activate(context) {
+	// 注册命令 'setRemark'
+	let disposable = vscode.commands.registerCommand('setRemark', async (uri) => {
+		// 如果没有选择文件或文件夹，显示错误信息
+		if (!uri || !uri.fsPath) {
+			return;
+		}
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "remark" is now active!');
+		// // 获取文件信息
+		// const fileInfo = await vscode.workspace.fs.stat(uri);
+		// const fileInfoTypeName = fileInfo.type ==1?'文件':'文件夹';
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('remark.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
+		// 获取当前打开的工作区
+		const workspaceFolders = vscode.workspace.workspaceFolders;
+		if (workspaceFolders.length == 0) {
+			vscode.window.showInformationMessage('当前没有工作区');
+		} else if (workspaceFolders.length > 1) {
+			vscode.window.showInformationMessage('当前工作区过多');
+		}
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from remark!');
+		// 项目路径
+		const projectPath = workspaceFolders[0].uri.fsPath;
+		// 获取当前点击的相对路径
+		const relativePath = vscode.workspace.asRelativePath(uri.fsPath);
+		console.table({
+			项目路径: projectPath,
+			当前点击的相对路径: relativePath,
+		});
+		if (projectPath == relativePath) {
+			vscode.window.showInformationMessage('不能在根目录备注');
+			return;
+		}
+
+		// 显示输入框，等待用户输入
+		const userInput = await vscode.window.showInputBox({
+			placeHolder: '输入备注...',
+			prompt: '请输入:',
+			value: '', // 初始值为空
+		});
+
+		// 检查用户是否输入了内容
+		if (userInput == undefined) {
+			// 用户取消了输入
+			vscode.window.showInformationMessage('取消输入');
+			return;
+		}
+
+		// 创建状态栏项
+		let statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+		statusBarItem.text = userInput; // 设置要显示的文本
+		statusBarItem.show(); // 显示状态栏项
 	});
 
+	// 将命令注册到上下文中
 	context.subscriptions.push(disposable);
 }
 
-// This method is called when your extension is deactivated
+//当你的扩展被停用时，这个方法被调用
 function deactivate() {}
 
 module.exports = {
 	activate,
-	deactivate
-}
+	deactivate,
+};

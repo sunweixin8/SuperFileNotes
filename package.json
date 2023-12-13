@@ -1,36 +1,47 @@
 {
-  "name": "remark",
-  "displayName": "remark",
-  "description": "'描述'",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.85.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [],
-  "main": "./extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "remark.helloWorld",
-        "title": "Hello World"
-      }
-    ]
-  },
-  "scripts": {
-    "lint": "eslint .",
-    "pretest": "npm run lint",
-    "test": "vscode-test"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.85.0",
-    "@types/mocha": "^10.0.6",
-    "@types/node": "18.x",
-    "eslint": "^8.54.0",
-    "typescript": "^5.3.2",
-    "@vscode/test-cli": "^0.0.4",
-    "@vscode/test-electron": "^2.3.8"
-  }
+	"name": "remark",
+	"displayName": "显示在应用市场的名字",
+	"description": "'具体描述'",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.85.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*:setRemark",
+		"onCommand:extension.refreshFileDecorator"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "setRemark",
+				"title": "编辑*备注"
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "setRemark",
+					"group": "navigation"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "npm run lint",
+		"test": "vscode-test"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.85.0",
+		"@types/mocha": "^10.0.6",
+		"@types/node": "18.x",
+		"eslint": "^8.54.0",
+		"typescript": "^5.3.2",
+		"@vscode/test-cli": "^0.0.4",
+		"@vscode/test-electron": "^2.3.8"
+	}
 }
