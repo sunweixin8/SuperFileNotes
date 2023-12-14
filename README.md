@@ -1,65 +1,35 @@
-# remark README
+<div align="center">
 
-This is the README for your extension "remark". After writing up a brief description, we recommend including the following sections.
+# 👻 一个给文件及文件夹设置备注的插件 👻
 
-## Features
+<div align="left">
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## 前言-（废话）
 
-For example if there is an image subfolder under your extension project workspace:
+在我的日常开发中经常会遇到一些棘手的项目名称，比如【稳进提质】【浙省事】【新湘事成】这些“究极简写”及“谐音梗”。给这些文件或文件夹起名英文文件名无疑是 🤣 画上的马——顶看不顶用 😅。起拼音名，当时是能看懂了，过一段时间：“阿巴阿巴，啥呀，这是”。
 
-\!\[feature X\]\(images/feature-x.png\)
+也有一段时间把文件名的备注啥的以树形的结构写在 Readme.md 里面，当时看起来“嗯···挺好”，一旦有一些急事过来，临时更改或者怎么样，就会忘记更新，后面再去更新就没了头绪，理起来也很费时间，😑 费心情！😒
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+🎉🎉🎉 于是诞生了这个小插件 🎉🎉🎉
 
-## Requirements
+## 产品特点（使用方法）
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+给文件及文件夹设置备注，显示在资源管理器的文件名右侧。
 
-## Extension Settings
+使用方法看图
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+![使用方法](./static/img/image.png)
 
-For example:
+## 已知问题（可以理解为 bug?)
 
-This extension contributes the following settings:
+- 文件夹在特定场景下备注不会显示
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+  Q: 如果文件夹内的文件包含未提交的文件 或其中有文件存在错误
+  vscode 会提示<b>包含强调项</b>，由于该提示权限较高，无法更改，暂时没有找到理想的解决办法<br>
+  A: 提交或修改后即可正常显示。
+  ![使用方法](./static/img/image1.png)
 
-## Known Issues
+## 其他
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- 备注的数据存储在/.vscode/file-notes.json 中
+- 手动更改 file-notes.json 需重启 vscode 才能生效
