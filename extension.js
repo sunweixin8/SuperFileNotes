@@ -125,7 +125,7 @@ async function activate(context) {
 		}
 
 		// 弹出确认框
-		const response = await vscode.window.showInformationMessage('确定要删除?', { modal: true }, '确定');
+		const response = await vscode.window.showInformationMessage(`确定要删除【${relativePath}】的所有备注?`, { modal: true }, '确定');
 		if (response === '确定') {
 			delNote(absolutePath, disposedList);
 			vscode.window.showInformationMessage('已清除');
