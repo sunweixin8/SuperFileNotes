@@ -10,21 +10,28 @@
 		"Other"
 	],
 	"activationEvents": [
-		"*:setRemark",
-		"onCommand:extension.refreshFileDecorator"
+		"*"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "setRemark",
-				"title": "编辑*备注"
+				"command": "addRemark",
+				"title": "♐1.设置备注"
+			},
+			{
+				"command": "delRemark",
+				"title": "♐2.清除备注"
 			}
 		],
 		"menus": {
 			"explorer/context": [
 				{
-					"command": "setRemark",
+					"command": "delRemark",
+					"group": "navigation"
+				},
+				{
+					"command": "addRemark",
 					"group": "navigation"
 				}
 			]
