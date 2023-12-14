@@ -22,16 +22,24 @@
 			{
 				"command": "delRemark",
 				"title": "♐2.清除备注"
+			},
+			{
+				"command": "viewRemark",
+				"title": "♐3.查看所有备注"
 			}
 		],
 		"menus": {
 			"explorer/context": [
 				{
+					"command": "addRemark",
+					"group": "navigation"
+				},
+				{
 					"command": "delRemark",
 					"group": "navigation"
 				},
 				{
-					"command": "addRemark",
+					"command": "viewRemark",
 					"group": "navigation"
 				}
 			]

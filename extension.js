@@ -131,9 +131,34 @@ async function activate(context) {
 			vscode.window.showInformationMessage('已清除');
 		}
 	});
+	// 注册命令 'viewRemark'
+	let viewRemark = vscode.commands.registerCommand('viewRemark', async (uri) => {
+		// 如果没有选择文件或文件夹，显示错误信息
+		if (!uri || !uri.fsPath) {
+			return;
+		}
+
+		// 获取当前打开的工作区
+		const workspaceFolders = vscode.workspace.workspaceFolders;
+		if (workspaceFolders.length == 0) {
+			vscode.window.showInformationMessage('当前没有工作区');
+		} else if (workspaceFolders.length > 1) {
+			vscode.window.showInformationMessage('当前工作区过多');
+		}
+		// 项目路径
+		const projectPath = workspaceFolders[0].uri.fsPath;
+
+		let html = '';
+		let historyList = await historyNote();
+		historyList.forEach((x, i) => {
+			let path = x.path.replace(projectPath, '');
+			html += `${i + 1}.路径：${path}--备注:${x.text}\r\r`;
+		});
+		vscode.window.showInformationMessage(html, { modal: true });
+	});
 
 	// 将命令注册到上下文中
-	context.subscriptions.push(addRemark, delRemark);
+	context.subscriptions.push(addRemark, delRemark, viewRemark);
 }
 
 //当你的扩展被停用时，这个方法被调用
