@@ -24,6 +24,13 @@ async function activate(context) {
 
 	// 注册命令 'addRemark'
 	let addRemark = vscode.commands.registerCommand('addRemark', async (uri) => {
+		console.clear();
+		// 获取当前活动的文本编辑器,如果有文本编辑器，获取其 URI;（快捷键触发）
+		const activeEditor = vscode.window.activeTextEditor;
+		if (!uri && activeEditor) {
+			uri = activeEditor.document.uri;
+		}
+
 		// 如果没有选择文件或文件夹，显示错误信息
 		if (!uri || !uri.fsPath) {
 			return;
@@ -55,7 +62,7 @@ async function activate(context) {
 
 		// 显示输入框，等待用户输入
 		const userInput = await vscode.window.showInputBox({
-			placeHolder: '输入备注...',
+			placeHolder: `给【${relativePath}】输入备注...`,
 			prompt: '请输入:',
 			value: '', // 初始值为空
 		});

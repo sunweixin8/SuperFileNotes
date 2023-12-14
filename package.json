@@ -35,7 +35,21 @@
 					"group": "navigation"
 				}
 			]
-		}
+		},
+		"keybindings": [
+			{
+				"command": "addRemark",
+				"key": "ctrl+m",
+				"mac": "cmd+m",
+				"when": "editorFocus"
+			},
+			{
+				"command": "addRemark",
+				"key": "ctrl+m",
+				"mac": "cmd+m",
+				"when": "!editorFocus"
+			}
+		]
 	},
 	"scripts": {
 		"lint": "eslint .",
