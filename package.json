@@ -1,11 +1,24 @@
 {
 	"name": "remark",
-	"displayName": "显示在应用市场的名字",
-	"description": "'具体描述'",
+	"displayName": "Super File Notes",
+	"description": "'文件备注工具'",
 	"version": "0.0.1",
 	"engines": {
-		"vscode": "^1.85.0"
+		"vscode": "^1.60.0"
 	},
+	"author": "小羊",
+	"publisher": "小羊",
+	"keywords": [
+		"file",
+		"folder",
+		"remark",
+		"note",
+		"notes",
+		"文件夹",
+		"文件",
+		"备注"
+	],
+	"icon": "static/img/icon.png",
 	"categories": [
 		"Other"
 	],
