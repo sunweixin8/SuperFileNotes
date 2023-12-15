@@ -1,6 +1,7 @@
 const vscode = require('vscode');
 const RenderNote = require('./utils/setNote.js');
 const delNote = require('./utils/delNote.js');
+const getNote = require('./utils/getNote.js');
 const writeFile = require('./utils/writeFile.js');
 const historyNote = require('./utils/historyNote.js');
 const $config = require('./utils/config.js');
@@ -131,8 +132,38 @@ async function activate(context) {
 		vscode.window.showInformationMessage(html, { modal: true });
 	});
 
+	// 注册文件重命名事件监听器
+	const renameFilesDisposable = vscode.workspace.onDidRenameFiles((event) => {
+		// 处理文件重命名事件
+		const renamedFiles = event.files;
+		renamedFiles.forEach(async (x) => {
+			let newPath = x.newUri.fsPath.replace(projectPath, '').replace('\\', '/');
+			let oldPath = x.oldUri.fsPath.replace(projectPath, '').replace('\\', '/');
+			let oldNoteList = getNote(oldPath);
+			// console.log('监听到了移动', { newPath, oldPath });
+			// console.log('读取到了老的', oldNoteList);
+			oldNoteList.forEach(async (x) => {
+				let newNoteInfo = {
+					text: x.text,
+					path: newPath,
+					time: x.time,
+				};
+				// console.log({ newNoteInfo });
+				//设置新的
+				let registration = RenderNote(context, newNoteInfo);
+				await writeFile(newNoteInfo);
+				disposedList.push({
+					path: newPath,
+					registration: registration,
+				});
+			});
+			// 删除老的
+			await delNote(oldPath, disposedList);
+		});
+	});
+
 	// 将命令注册到上下文中
-	context.subscriptions.push(addRemark, delRemark, viewRemark);
+	context.subscriptions.push(addRemark, delRemark, viewRemark, renameFilesDisposable);
 }
 
 //当你的扩展被停用时，这个方法被调用
