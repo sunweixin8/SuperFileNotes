@@ -10,13 +10,13 @@ async function historyNote() {
 	const rootPath = vscode.workspace.rootPath;
 	if (!rootPath) {
 		console.log('文件备注插件:没有打开任何工作区.');
-		return;
+		return [];
 	}
 	// 判断 .vscode 文件夹是否存在
 	let dirPath = rootPath + '/.vscode';
 	if (!fs.existsSync(dirPath)) {
 		console.log('文件备注插件:没有历史记录.');
-		return;
+		return [];
 	}
 
 	// 拼接完整的文件路径

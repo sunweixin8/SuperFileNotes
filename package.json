@@ -7,7 +7,7 @@
 		"vscode": "^1.85.0"
 	},
 	"author": "小羊",
-	"publisher": "小羊",
+	"publisher": "xiaoxiaoyang",
 	"keywords": [
 		"file",
 		"folder",
@@ -27,7 +27,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"*"
+		"onFileSystem:watcher"
 	],
 	"main": "./extension.js",
 	"contributes": {
