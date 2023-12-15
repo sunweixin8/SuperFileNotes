@@ -14,7 +14,7 @@ class MyFileDecorationProvider {
 
 		// 创建一个文件装饰对象
 		// console.log(uri);
-		let relativePath = uri.fsPath.replace(projectPath, '').replace('\\', '/');
+		let relativePath = uri.fsPath.replace(projectPath, '').replace(/\\/g, '/');
 		// console.log(relativePath, this.path);
 		if (relativePath == this.path) {
 			// console.log(relativePath, this.path, this.text, '--------------------------------------------');

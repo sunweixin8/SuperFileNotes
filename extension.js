@@ -136,29 +136,58 @@ async function activate(context) {
 	const renameFilesDisposable = vscode.workspace.onDidRenameFiles((event) => {
 		// 处理文件重命名事件
 		const renamedFiles = event.files;
+
 		renamedFiles.forEach(async (x) => {
-			let newPath = x.newUri.fsPath.replace(projectPath, '').replace('\\', '/');
-			let oldPath = x.oldUri.fsPath.replace(projectPath, '').replace('\\', '/');
-			let oldNoteList = getNote(oldPath);
-			// console.log('监听到了移动', { newPath, oldPath });
-			// console.log('读取到了老的', oldNoteList);
-			oldNoteList.forEach(async (x) => {
-				let newNoteInfo = {
-					text: x.text,
-					path: newPath,
-					time: x.time,
-				};
-				// console.log({ newNoteInfo });
-				//设置新的
-				let registration = RenderNote(context, newNoteInfo);
-				await writeFile(newNoteInfo);
-				disposedList.push({
-					path: newPath,
-					registration: registration,
+			let newPath = x.newUri.fsPath.replace(projectPath, '').replace(/\\/g, '/');
+			let oldPath = x.oldUri.fsPath.replace(projectPath, '').replace(/\\/g, '/');
+			console.log('监听到了移动', { newPath, oldPath });
+
+			let fileStat = await vscode.workspace.fs.stat(x.newUri);
+			let isDir = fileStat.type === vscode.FileType.Directory;
+			console.log('是否是文件夹', isDir);
+
+			if (isDir) {
+				let historyList = await historyNote();
+				historyList.forEach(async (x, i) => {
+					// ==0,才是正确的路径
+					if (x.path.indexOf(oldPath) == 0) {
+						let newNoteInfo = {
+							text: x.text,
+							path: x.path.replace(oldPath, newPath),
+							time: x.time,
+						};
+						//设置新的
+						let registration = RenderNote(context, newNoteInfo);
+						await writeFile(newNoteInfo);
+						disposedList.push({
+							path: newPath,
+							registration: registration,
+						});
+						// 删除老的
+						await delNote(x.path, disposedList);
+					}
 				});
-			});
-			// 删除老的
-			await delNote(oldPath, disposedList);
+			} else {
+				let oldNoteList = getNote(oldPath);
+				// console.log('读取到了老的', oldNoteList);
+				oldNoteList.forEach(async (x) => {
+					let newNoteInfo = {
+						text: x.text,
+						path: newPath,
+						time: x.time,
+					};
+					// console.log({ newNoteInfo });
+					//设置新的
+					let registration = RenderNote(context, newNoteInfo);
+					await writeFile(newNoteInfo);
+					disposedList.push({
+						path: newPath,
+						registration: registration,
+					});
+				});
+				// 删除老的
+				await delNote(oldPath, disposedList);
+			}
 		});
 	});
 
