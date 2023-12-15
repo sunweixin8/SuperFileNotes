@@ -3,9 +3,13 @@ const RenderNote = require('./utils/setNote.js');
 const delNote = require('./utils/delNote.js');
 const writeFile = require('./utils/writeFile.js');
 const historyNote = require('./utils/historyNote.js');
+const $config = require('./utils/config.js');
 
 async function activate(context) {
+	// 存储对象列表
 	let disposedList = [];
+	// 项目路径
+	const projectPath = $config.projectPathFull;
 
 	// 打开项目，读取历史
 	try {
@@ -36,18 +40,8 @@ async function activate(context) {
 			return;
 		}
 
-		// 获取当前打开的工作区
-		const workspaceFolders = vscode.workspace.workspaceFolders;
-		if (workspaceFolders.length == 0) {
-			vscode.window.showInformationMessage('当前没有工作区');
-		} else if (workspaceFolders.length > 1) {
-			vscode.window.showInformationMessage('当前工作区过多');
-		}
-
-		// 项目路径
-		const projectPath = workspaceFolders[0].uri.fsPath;
 		// 获取当前点击的绝对路径
-		const absolutePath = uri.fsPath;
+		// const absolutePath = uri.fsPath;
 		// 获取当前点击的相对路径
 		const relativePath = vscode.workspace.asRelativePath(uri.fsPath);
 		// console.table({
@@ -78,7 +72,7 @@ async function activate(context) {
 		let createTime = new Date().toLocaleString().substring(2);
 		let INFO = {
 			text: userInput,
-			path: absolutePath,
+			path: relativePath,
 			time: createTime,
 		};
 		//设置单条
@@ -86,7 +80,7 @@ async function activate(context) {
 		// 存储
 		writeFile(INFO);
 		disposedList.push({
-			path: absolutePath,
+			path: relativePath,
 			registration: registration,
 		});
 	});
@@ -101,18 +95,8 @@ async function activate(context) {
 		// const fileInfo = await vscode.workspace.fs.stat(uri);
 		// const fileInfoTypeName = fileInfo.type ==1?'文件':'文件夹';
 
-		// 获取当前打开的工作区
-		const workspaceFolders = vscode.workspace.workspaceFolders;
-		if (workspaceFolders.length == 0) {
-			vscode.window.showInformationMessage('当前没有工作区');
-		} else if (workspaceFolders.length > 1) {
-			vscode.window.showInformationMessage('当前工作区过多');
-		}
-
-		// 项目路径
-		const projectPath = workspaceFolders[0].uri.fsPath;
 		// 获取当前点击的绝对路径
-		const absolutePath = uri.fsPath;
+		// const absolutePath = uri.fsPath;
 		// 获取当前点击的相对路径
 		const relativePath = vscode.workspace.asRelativePath(uri.fsPath);
 		// console.table({
@@ -128,7 +112,7 @@ async function activate(context) {
 		// 弹出确认框
 		const response = await vscode.window.showInformationMessage(`确定要删除【${relativePath}】的所有备注?`, { modal: true }, '确定');
 		if (response === '确定') {
-			delNote(absolutePath, disposedList);
+			delNote(relativePath, disposedList);
 			vscode.window.showInformationMessage('已清除');
 		}
 	});
@@ -139,21 +123,10 @@ async function activate(context) {
 			return;
 		}
 
-		// 获取当前打开的工作区
-		const workspaceFolders = vscode.workspace.workspaceFolders;
-		if (workspaceFolders.length == 0) {
-			vscode.window.showInformationMessage('当前没有工作区');
-		} else if (workspaceFolders.length > 1) {
-			vscode.window.showInformationMessage('当前工作区过多');
-		}
-		// 项目路径
-		const projectPath = workspaceFolders[0].uri.fsPath;
-
 		let html = '';
 		let historyList = await historyNote();
 		historyList.forEach((x, i) => {
-			let path = x.path.replace(projectPath, '');
-			html += `${i + 1}.路径：${path}--备注:${x.text}\r\r`;
+			html += `${i + 1}.路径：${x.path}--备注:${x.text}\r\r`;
 		});
 		vscode.window.showInformationMessage(html, { modal: true });
 	});

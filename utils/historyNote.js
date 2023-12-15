@@ -5,22 +5,18 @@ const $config = require('./config.js');
 async function historyNote() {
 	// 获取文件名
 	const fileName = $config.jsonName;
-
 	// 获取当前打开的工作区根目录
-	const rootPath = vscode.workspace.rootPath;
-	if (!rootPath) {
-		console.log('文件备注插件:没有打开任何工作区.');
-		return [];
-	}
+	const rootPath = $config.projectPathFull;
+
 	// 判断 .vscode 文件夹是否存在
-	let dirPath = rootPath + '/.vscode';
+	let dirPath = rootPath + '.vscode';
 	if (!fs.existsSync(dirPath)) {
 		console.log('文件备注插件:没有历史记录.');
 		return [];
 	}
 
 	// 拼接完整的文件路径
-	const filePath = vscode.Uri.file(rootPath + '/.vscode/' + fileName);
+	const filePath = vscode.Uri.file(rootPath + '.vscode/' + fileName);
 
 	let absolutePath = filePath.fsPath;
 

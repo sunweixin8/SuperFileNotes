@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+const $config = require('./config.js');
 
 class MyFileDecorationProvider {
 	constructor(INFO) {
@@ -8,9 +9,15 @@ class MyFileDecorationProvider {
 	}
 
 	provideFileDecoration(uri, token) {
+		// 项目路径
+		const projectPath = $config.projectPathFull;
+
 		// 创建一个文件装饰对象
 		// console.log(uri);
-		if (uri.fsPath == this.path) {
+		let relativePath = uri.fsPath.replace(projectPath, '').replace('\\', '/');
+		// console.log(relativePath, this.path);
+		if (relativePath == this.path) {
+			// console.log(relativePath, this.path, this.text, '--------------------------------------------');
 			let option = {
 				badge: this.text.substring(0, 2),
 				tooltip: `

@@ -27,7 +27,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onFileSystem:watcher"
+		"*"
 	],
 	"main": "./extension.js",
 	"contributes": {

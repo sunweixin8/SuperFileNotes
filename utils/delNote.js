@@ -8,16 +8,11 @@ const $config = require('./config.js');
 function delNote(delPath, disposedList) {
 	// 获取文件名
 	const fileName = $config.jsonName;
-
 	// 获取当前打开的工作区根目录
-	const rootPath = vscode.workspace.rootPath;
-	if (!rootPath) {
-		vscode.window.showErrorMessage('没有打开任何工作区.');
-		return;
-	}
+	const rootPath = $config.projectPathFull;
 
 	// 拼接完整的文件路径
-	const filePath = vscode.Uri.file(rootPath + '/.vscode/' + fileName);
+	const filePath = vscode.Uri.file(rootPath + '.vscode/' + fileName);
 
 	let absolutePath = filePath.fsPath;
 	let newContent = null;
