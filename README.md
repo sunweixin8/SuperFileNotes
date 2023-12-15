@@ -28,7 +28,6 @@
 <br>✨ 支持一键查看所有备注
 <br>✨ 推荐在【.gitignore】文件中把【.vscode】文件夹取消忽略提交，这样在多人协同项目时，都可以看到文件备注。
 <br>✨ 使用方法看图 [图片查看不了？](https://marketplace.visualstudio.com/items?itemName=xiaoxiaoyang.remark)
-
 ![图片查看不了，通过链接查看https://marketplace.visualstudio.com/items?itemName=xiaoxiaoyang.remark](image/image.png)
 
 ## 已知问题
@@ -38,7 +37,7 @@
   Q: 如果文件夹内的文件包含未提交的文件 或其中有文件存在错误
   vscode 会提示<b>包含强调项</b>，由于该提示权限较高，无法更改，暂时没有找到理想的解决办法<br>
   A: 提交或修改后即可正常显示。
-  ![图片查看不了，通过链接查看https://marketplace.visualstudio.com/items?itemName=xiaoxiaoyang.remark](image/image12.png)
+  ![图片查看不了，通过链接查看https://marketplace.visualstudio.com/items?itemName=xiaoxiaoyang.remark](image/image1.png)
 
 ## 其他
 
