@@ -2,7 +2,7 @@
 	"name": "remark",
 	"displayName": "Super File Notes",
 	"description": "文件备注工具",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"engines": {
 		"vscode": "^1.85.0"
 	},
