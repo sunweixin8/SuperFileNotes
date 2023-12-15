@@ -9,14 +9,14 @@ async function historyNote() {
 	// 获取当前打开的工作区根目录
 	const rootPath = vscode.workspace.rootPath;
 	if (!rootPath) {
-		vscode.window.showErrorMessage('没有打开任何工作区.');
+		console.log('文件备注插件:没有打开任何工作区.');
 		return;
 	}
 	// 判断 .vscode 文件夹是否存在
 	let dirPath = rootPath + '/.vscode';
 	if (!fs.existsSync(dirPath)) {
-		// 创建 .vscode 文件夹
-		fs.mkdirSync(dirPath);
+		console.log('文件备注插件:没有历史记录.');
+		return;
 	}
 
 	// 拼接完整的文件路径

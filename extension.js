@@ -19,7 +19,7 @@ async function activate(context) {
 			});
 		});
 	} catch (error) {
-		vscode.window.showInformationMessage('恢复备注时出现了异常', error);
+		console.log('文件备注插件:恢复备注时出现了异常', error);
 	}
 
 	// 注册命令 'addRemark'
@@ -70,7 +70,8 @@ async function activate(context) {
 		// 检查用户是否输入了内容
 		if (userInput == undefined) {
 			// 用户取消了输入
-			vscode.window.showInformationMessage('取消输入');
+			console.log('文件备注插件:用户取消了输入');
+			// vscode.window.showInformationMessage('取消输入');
 			return;
 		}
 
