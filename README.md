@@ -14,7 +14,7 @@
 
 ## 🧧 打赏作者 🧧
 
-#### 点击链接尽情打赏我把！https://xiaoxiaoyang.top/?donate=true <br>
+#### 点击链接尽情打赏我把！[https://xiaoxiaoyang.top/?donate=true](https://xiaoxiaoyang.top/?donate=true) <br>
 
 这个也是作者的博客，里面也有很多开发的其他工具、插件推荐、干活分享、技术分享哦~
 <br>
@@ -27,9 +27,9 @@
 <br> --- 快捷键支持在【键盘快捷方式】中自定义（删除备注使用快捷键容易误触产生不可逆操作，故未设置快捷键）
 <br>✨ 支持一键查看所有备注
 <br>✨ 推荐在【.gitignore】文件中把【.vscode】文件夹取消忽略提交，这样在多人协同项目时，都可以看到文件备注。
-<br>✨ 使用方法看图
+<br>✨ 使用方法看图 [图片查看不了？](https://marketplace.visualstudio.com/items?itemName=xiaoxiaoyang.remark)
 
-![使用方法](./static/img/image.png)
+![图片查看不了，通过链接查看https://marketplace.visualstudio.com/items?itemName=xiaoxiaoyang.remark](image/image.png)
 
 ## 已知问题
 
@@ -38,7 +38,7 @@
   Q: 如果文件夹内的文件包含未提交的文件 或其中有文件存在错误
   vscode 会提示<b>包含强调项</b>，由于该提示权限较高，无法更改，暂时没有找到理想的解决办法<br>
   A: 提交或修改后即可正常显示。
-  ![使用方法](./static/img/image1.png)
+  ![图片查看不了，通过链接查看https://marketplace.visualstudio.com/items?itemName=xiaoxiaoyang.remark](image/image12.png)
 
 ## 其他
 

@@ -2,7 +2,7 @@
 	"name": "remark",
 	"displayName": "Super File Notes",
 	"description": "文件备注工具",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"engines": {
 		"vscode": "^1.85.0"
 	},
@@ -18,7 +18,7 @@
 		"文件",
 		"备注"
 	],
-	"icon": "static/img/icon.png",
+	"icon": "image/icon.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/sunweixin8/SuperFileNotes"
