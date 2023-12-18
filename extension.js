@@ -6,6 +6,10 @@ const writeFile = require('./utils/writeFile.js');
 const historyNote = require('./utils/historyNote.js');
 const $config = require('./utils/config.js');
 
+function alertAndCopy(message) {
+	vscode.window.showInformationMessage(message, { modal: true });
+}
+
 async function activate(context) {
 	// 存储对象列表
 	let disposedList = [];
@@ -124,12 +128,45 @@ async function activate(context) {
 			return;
 		}
 
+		// 获取当前点击的相对路径
+		const relativePath = vscode.workspace.asRelativePath(uri.fsPath);
+		if (projectPath == relativePath) {
+			vscode.window.showInformationMessage('不能在根目录备注');
+			return;
+		}
+
+		let html = '';
+		let historyList = await historyNote();
+		historyList.forEach((x, i) => {
+			if (x.path == relativePath) {
+				html += `
+				\r\n♐备注: ${x.text}
+				♐备注时间: ${x.time}
+				`;
+			}
+		});
+		// 如果为空
+		if (html.length == 0) {
+			html = `【${relativePath}】未设置备注`;
+		} else {
+			html = `【${relativePath}】共${historyList.length}条备注\r\n` + html;
+		}
+		// vscode.window.showInformationMessage(html, { modal: true });
+		alertAndCopy(html);
+	});
+	// 注册命令 'viewAllRemark'
+	let viewAllRemark = vscode.commands.registerCommand('viewAllRemark', async (uri) => {
+		// 如果没有选择文件或文件夹，显示错误信息
+		if (!uri || !uri.fsPath) {
+			return;
+		}
+
 		let html = '';
 		let historyList = await historyNote();
 		historyList.forEach((x, i) => {
 			html += `${i + 1}.路径：${x.path}--备注:${x.text}\r\r`;
 		});
-		vscode.window.showInformationMessage(html, { modal: true });
+		alertAndCopy(html);
 	});
 
 	// 注册文件重命名事件监听器
@@ -192,7 +229,7 @@ async function activate(context) {
 	});
 
 	// 将命令注册到上下文中
-	context.subscriptions.push(addRemark, delRemark, viewRemark, renameFilesDisposable);
+	context.subscriptions.push(addRemark, delRemark, viewRemark, viewAllRemark, renameFilesDisposable);
 }
 
 //当你的扩展被停用时，这个方法被调用
