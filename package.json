@@ -16,7 +16,8 @@
 		"notes",
 		"文件夹",
 		"文件",
-		"备注"
+		"备注",
+		"Super File Notes"
 	],
 	"icon": "image/icon.png",
 	"repository": {
