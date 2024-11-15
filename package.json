@@ -1,13 +1,13 @@
 {
-	"name": "remark",
+	"name": "Super File Notes",
 	"displayName": "Super File Notes",
-	"description": "文件备注工具",
+	"description": "文件备注工具给文件及文件夹设置备注",
 	"version": "0.0.6",
 	"engines": {
 		"vscode": "^1.85.0"
 	},
 	"author": "小羊",
-	"publisher": "xiaoxiaoyang",
+	"publisher": "xiaoxiaoyang.top",
 	"keywords": [
 		"file",
 		"folder",
@@ -17,9 +17,10 @@
 		"文件夹",
 		"文件",
 		"备注",
+		"文件备注工具",
 		"Super File Notes"
 	],
-	"icon": "image/icon.png",
+	"icon": "image/icon.jpg",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/sunweixin8/SuperFileNotes"
