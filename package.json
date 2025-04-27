@@ -36,41 +36,62 @@
 		"commands": [
 			{
 				"command": "addRemark",
-				"title": "♐1.设置备注"
+				"title": "设置备注"
 			},
 			{
 				"command": "delRemark",
-				"title": "♐2.清除备注"
+				"title": "清除备注"
 			},
 			{
 				"command": "viewRemark",
-				"title": "♐3.查看备注"
+				"title": "查看备注"
 			},
 			{
 				"command": "viewAllRemark",
-				"title": "♐4.查看所有备注"
+				"title": "查看所有备注"
+			},
+			{
+				"command": "refreshRemark",
+				"title": "刷新备注"
 			}
 		],
 		"menus": {
 			"explorer/context": [
 				{
-					"command": "addRemark",
-					"group": "navigation"
-				},
+					"submenu": "fileNotesSubmenu",
+					"group": "7_modification"
+				}
+			],
+			"fileNotesSubmenu": [
 				{
-					"command": "delRemark",
-					"group": "navigation"
+					"command": "addRemark",
+					"group": "1_notes"
 				},
 				{
 					"command": "viewRemark",
-					"group": "navigation"
+					"group": "1_notes"
+				},
+				{
+					"command": "delRemark",
+					"group": "2_manage"
 				},
 				{
 					"command": "viewAllRemark",
-					"group": "navigation"
+					"group": "2_manage"
+				},
+				{
+					"command": "refreshRemark",
+					"group": "2_manage"
 				}
 			]
 		},
+		"submenus": [
+			{
+				"id": "fileNotesSubmenu",
+				"label": "♐ 文件备注",
+				"icon": "$(note)"
+			}
+		],
 		"keybindings": [
 			{
 				"command": "addRemark",
