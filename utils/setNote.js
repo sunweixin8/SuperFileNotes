@@ -6,6 +6,7 @@ class MyFileDecorationProvider {
 		this.text = INFO.text;
 		this.path = INFO.path;
 		this.time = INFO.time;
+		this.badge = INFO.badge;
 	}
 
 	provideFileDecoration(uri, token) {
@@ -19,7 +20,7 @@ class MyFileDecorationProvider {
 		if (relativePath == this.path) {
 			// console.log(relativePath, this.path, this.text, '--------------------------------------------');
 			let option = {
-				badge: this.text.substring(0, 2),
+				badge: this.badge || this.text.substring(0, 2),
 				tooltip: `
 \r\n♐备注: ${this.text}
 ♐备注时间: ${this.time}\r\n
@@ -37,7 +38,7 @@ function RenderNote(context, INFO) {
 	context.subscriptions.push(registration);
 
 	// 当文件资源视图可见时，触发更新
-	vscode.window.onDidChangeVisibleTextEditors(() => {});
+	vscode.window.onDidChangeVisibleTextEditors(() => { });
 
 	// 返回对象，方便后续操作
 	return registration;
