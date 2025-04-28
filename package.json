@@ -36,38 +36,110 @@
 		"commands": [
 			{
 				"command": "addRemark",
-				"title": "♐1.设置备注"
+				"title": "设置备注"
 			},
 			{
 				"command": "delRemark",
-				"title": "♐2.清除备注"
+				"title": "清除备注"
 			},
 			{
 				"command": "viewRemark",
-				"title": "♐3.查看备注"
+				"title": "查看备注"
 			},
 			{
 				"command": "viewAllRemark",
-				"title": "♐4.查看所有备注"
+				"title": "查看所有备注"
+			},
+			{
+				"command": "refreshRemark",
+				"title": "刷新备注"
+			},
+			{
+				"command": "superFileNotes.refreshRemarkTree",
+				"title": "刷新备注列表",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "superFileNotes.openFile",
+				"title": "打开文件"
+			},
+			{
+				"command": "superFileNotes.viewRemarkFromTree",
+				"title": "查看备注"
+			},
+			{
+				"command": "superFileNotes.deleteRemarkFromTree",
+				"title": "清除备注"
 			}
 		],
 		"menus": {
 			"explorer/context": [
 				{
-					"command": "addRemark",
-					"group": "navigation"
-				},
+					"submenu": "fileNotesSubmenu",
+					"group": "7_modification"
+				}
+			],
+			"fileNotesSubmenu": [
 				{
-					"command": "delRemark",
-					"group": "navigation"
+					"command": "addRemark",
+					"group": "1_notes"
 				},
 				{
 					"command": "viewRemark",
-					"group": "navigation"
+					"group": "1_notes"
+				},
+				{
+					"command": "delRemark",
+					"group": "2_manage"
 				},
 				{
 					"command": "viewAllRemark",
+					"group": "2_manage"
+				},
+				{
+					"command": "refreshRemark",
+					"group": "2_manage"
+				}
+			],
+			"view/title": [
+				{
+					"command": "superFileNotes.refreshRemarkTree",
+					"when": "view == superFileNotes.remarkTreeView",
 					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "superFileNotes.openFile",
+					"when": "view == superFileNotes.remarkTreeView && viewItem == file",
+					"group": "1_notes"
+				},
+				{
+					"command": "superFileNotes.viewRemarkFromTree",
+					"when": "view == superFileNotes.remarkTreeView",
+					"group": "1_notes"
+				},
+				{
+					"command": "superFileNotes.deleteRemarkFromTree",
+					"when": "view == superFileNotes.remarkTreeView",
+					"group": "2_manage"
+				}
+			]
+		},
+		"submenus": [
+			{
+				"id": "fileNotesSubmenu",
+				"label": "♐ 文件备注",
+				"icon": "$(note)"
+			}
+		],
+		"views": {
+			"explorer": [
+				{
+					"id": "superFileNotes.remarkTreeView",
+					"name": "文件备注列表",
+					"icon": "$(note)",
+					"contextualTitle": "文件备注"
 				}
 			]
 		},
