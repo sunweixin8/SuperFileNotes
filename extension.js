@@ -5,6 +5,8 @@ const getNote = require('./utils/getNote.js');
 const writeFile = require('./utils/writeFile.js');
 const historyNote = require('./utils/historyNote.js');
 const $config = require('./utils/config.js');
+const RemarkTreeProvider = require('./utils/treeViewProvider.js');
+const path = require('path');
 
 function alertAndCopy(message) {
 	vscode.window.showInformationMessage(message, { modal: true });
@@ -15,6 +17,42 @@ async function activate(context) {
 	let disposedList = [];
 	// 项目路径
 	const projectPath = $config.projectPathFull;
+
+	// 初始化树视图 - Using the correct path format for the OS
+	const workspaceRoot = projectPath.slice(0, -1); // Remove trailing slash/backslash
+	const remarkTreeProvider = new RemarkTreeProvider(workspaceRoot);
+	const treeView = vscode.window.registerTreeDataProvider('superFileNotes.remarkTreeView', remarkTreeProvider);
+
+	// 刷新备注的函数
+	async function refreshAllNotes() {
+		try {
+			// 清除所有现有的装饰器
+			disposedList.forEach(item => {
+				if (item.registration && typeof item.registration.dispose === 'function') {
+					item.registration.dispose();
+				}
+			});
+			disposedList = [];
+			
+			// 重新读取备注文件并应用所有备注
+			let historyList = await historyNote();
+			historyList.forEach((x) => {
+				let registration = RenderNote(context, x);
+				disposedList.push({
+					path: x.path,
+					registration: registration,
+				});
+			});
+			
+			// 刷新树视图
+			remarkTreeProvider.refresh();
+			
+			vscode.window.showInformationMessage('备注已刷新');
+		} catch (error) {
+			console.log('文件备注插件:刷新备注时出现了异常', error);
+			vscode.window.showErrorMessage('刷新备注时出现错误: ' + error.message);
+		}
+	}
 
 	// 打开项目，读取历史
 	try {
@@ -45,15 +83,8 @@ async function activate(context) {
 			return;
 		}
 
-		// 获取当前点击的绝对路径
-		// const absolutePath = uri.fsPath;
 		// 获取当前点击的相对路径
 		const relativePath = vscode.workspace.asRelativePath(uri.fsPath);
-		// console.table({
-		// 	项目路径: projectPath,
-		// 	当前点击的绝对路径: absolutePath,
-		// 	当前点击的相对路径: relativePath,
-		// });
 		if (projectPath == relativePath) {
 			vscode.window.showInformationMessage('不能在根目录备注');
 			return;
@@ -88,6 +119,9 @@ async function activate(context) {
 			path: relativePath,
 			registration: registration,
 		});
+		
+		// 刷新树视图
+		remarkTreeProvider.refresh();
 	});
 	// 注册命令 'delRemark'
 	let delRemark = vscode.commands.registerCommand('delRemark', async (uri) => {
@@ -96,19 +130,8 @@ async function activate(context) {
 			return;
 		}
 
-		// // 获取文件信息
-		// const fileInfo = await vscode.workspace.fs.stat(uri);
-		// const fileInfoTypeName = fileInfo.type ==1?'文件':'文件夹';
-
-		// 获取当前点击的绝对路径
-		// const absolutePath = uri.fsPath;
 		// 获取当前点击的相对路径
 		const relativePath = vscode.workspace.asRelativePath(uri.fsPath);
-		// console.table({
-		// 	项目路径: projectPath,
-		// 	当前点击的绝对路径: absolutePath,
-		// 	当前点击的相对路径: relativePath,
-		// });
 		if (projectPath == relativePath) {
 			vscode.window.showInformationMessage('不能在根目录备注');
 			return;
@@ -118,6 +141,10 @@ async function activate(context) {
 		const response = await vscode.window.showInformationMessage(`确定要删除【${relativePath}】的所有备注?`, { modal: true }, '确定');
 		if (response === '确定') {
 			delNote(relativePath, disposedList);
+			
+			// 刷新树视图
+			remarkTreeProvider.refresh();
+			
 			vscode.window.showInformationMessage('已清除');
 		}
 	});
@@ -167,6 +194,79 @@ async function activate(context) {
 			html += `${i + 1}.路径：${x.path}--备注:${x.text}\r\r`;
 		});
 		alertAndCopy(html);
+	});
+
+	// 注册命令 'refreshRemark'
+	let refreshRemark = vscode.commands.registerCommand('refreshRemark', async (uri) => {
+		await refreshAllNotes();
+	});
+
+	// 注册命令 'superFileNotes.refreshRemarkTree'
+	let refreshRemarkTree = vscode.commands.registerCommand('superFileNotes.refreshRemarkTree', async () => {
+		remarkTreeProvider.refresh();
+		vscode.window.showInformationMessage('备注列表已刷新');
+	});
+
+	// 注册从树视图打开文件的命令
+	let openFile = vscode.commands.registerCommand('superFileNotes.openFile', async (treeItem) => {
+		if (treeItem && treeItem.filePath) {
+			const uri = vscode.Uri.file(treeItem.filePath);
+			await vscode.commands.executeCommand('vscode.open', uri);
+		}
+	});
+
+	// 注册从树视图查看备注的命令
+	let viewRemarkFromTree = vscode.commands.registerCommand('superFileNotes.viewRemarkFromTree', async (treeItem) => {
+		if (treeItem && treeItem.filePath) {
+			// 获取相对路径
+			const relativePath = vscode.workspace.asRelativePath(treeItem.filePath);
+			
+			let html = '';
+			let historyList = await historyNote();
+			// 处理正反斜杠差异，确保能找到对应的备注
+			const fileRemarks = historyList.filter(x => {
+				const xPath = x.path.replace(/\\/g, '/');
+				const relPath = relativePath.replace(/\\/g, '/');
+				return xPath === relPath;
+			});
+			
+			fileRemarks.forEach((x, i) => {
+				html += `
+				\r\n♐备注: ${x.text}
+				♐备注时间: ${x.time}
+				`;
+			});
+			
+			// 如果为空
+			if (fileRemarks.length === 0) {
+				html = `【${relativePath}】未设置备注`;
+			} else {
+				html = `【${relativePath}】共${fileRemarks.length}条备注\r\n` + html;
+			}
+			
+			alertAndCopy(html);
+		}
+	});
+
+	// 注册从树视图删除备注的命令
+	let deleteRemarkFromTree = vscode.commands.registerCommand('superFileNotes.deleteRemarkFromTree', async (treeItem) => {
+		if (treeItem && treeItem.filePath) {
+			// 获取相对路径
+			const relativePath = vscode.workspace.asRelativePath(treeItem.filePath);
+			
+			// 弹出确认框
+			const response = await vscode.window.showInformationMessage(`确定要删除【${relativePath}】的所有备注?`, { modal: true }, '确定');
+			if (response === '确定') {
+				// 处理正反斜杠差异
+				let normalizedPath = relativePath.replace(/\\/g, '/');
+				delNote(normalizedPath, disposedList);
+				
+				// 刷新树视图
+				remarkTreeProvider.refresh();
+				
+				vscode.window.showInformationMessage('已清除');
+			}
+		}
 	});
 
 	// 注册文件重命名事件监听器
@@ -221,18 +321,32 @@ async function activate(context) {
 						path: newPath,
 						registration: registration,
 					});
+					// 删除老的
+					await delNote(oldPath, disposedList);
 				});
-				// 删除老的
-				await delNote(oldPath, disposedList);
 			}
+			
+			// 刷新树视图
+			remarkTreeProvider.refresh();
 		});
 	});
 
-	// 将命令注册到上下文中
-	context.subscriptions.push(addRemark, delRemark, viewRemark, viewAllRemark, renameFilesDisposable);
+	// 将命令注册添加到订阅者列表
+	context.subscriptions.push(
+		addRemark,
+		viewRemark,
+		delRemark,
+		viewAllRemark,
+		refreshRemark,
+		refreshRemarkTree,
+		openFile,
+		viewRemarkFromTree,
+		deleteRemarkFromTree,
+		renameFilesDisposable,
+		treeView
+	);
 }
 
-//当你的扩展被停用时，这个方法被调用
 function deactivate() {}
 
 module.exports = {
