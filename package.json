@@ -1,13 +1,13 @@
 {
-	"name": "Super File Notes",
-	"displayName": "Super File Notes",
+	"name": "super-file-notes",
+	"displayName": "new Super File Notes",
 	"description": "文件备注工具给文件及文件夹设置备注",
-	"version": "0.0.6",
+	"version": "0.0.8",
 	"engines": {
 		"vscode": "^1.85.0"
 	},
 	"author": "小羊",
-	"publisher": "xiaoxiaoyang.top",
+	"publisher": "xiaoxiaoyang",
 	"keywords": [
 		"file",
 		"folder",
@@ -18,7 +18,8 @@
 		"文件",
 		"备注",
 		"文件备注工具",
-		"Super File Notes"
+		"Super File Notes",
+		"new Super File Notes"
 	],
 	"icon": "image/icon.jpg",
 	"repository": {

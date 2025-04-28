@@ -4,6 +4,9 @@
 
 <div align="left">
 
+## 注意！！
+“Super File Notes” 已弃用，因 <b>vscode插件规则更改</b> ，不得不启用一个新的拓展ID，以后仅维护这一个更新[“new Super File Notes”](https://marketplace.visualstudio.com/items/?itemName=xiaoxiaoyang.super-file-notes)。
+
 ## 前言-（废话）
 
 在我的日常开发中经常会遇到一些棘手的项目名称，比如【稳进提质】【浙省事】【新湘事成】这些“究极简写”及“谐音梗”。给这些文件或文件夹起名英文文件名无疑是 🤣 画上的马——顶看不顶用 😅。起拼音名，当时是能看懂了，过一段时间：“阿巴阿巴，啥呀，这是”。
