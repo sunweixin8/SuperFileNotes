@@ -12,7 +12,7 @@ function getNote(oldPath) {
 	const rootPath = $config.projectPathFull;
 
 	// 拼接完整的文件路径
-	const filePath = vscode.Uri.file(rootPath + '.vscode/' + fileName);
+	const filePath = vscode.Uri.joinPath(vscode.Uri.file(rootPath + '.vscode'),fileName);
 
 	let absolutePath = filePath.fsPath;
 	let newContent = null;

@@ -2,7 +2,7 @@
 	"name": "super-file-notes",
 	"displayName": "new Super File Notes",
 	"description": "文件备注工具给文件及文件夹设置备注",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"engines": {
 		"vscode": "^1.85.0"
 	},

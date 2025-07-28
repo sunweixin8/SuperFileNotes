@@ -11,10 +11,10 @@ function delNote(delPath, disposedList) {
 	// 获取当前打开的工作区根目录
 	const rootPath = $config.projectPathFull;
 
-	// 拼接完整的文件路径
-	const filePath = vscode.Uri.file(rootPath + '.vscode/' + fileName);
+	let dirPath = vscode.Uri.joinPath(vscode.Uri.file(rootPath) , '.vscode');
 
-	let absolutePath = filePath.fsPath;
+	// 拼接完整的文件路径
+	let absolutePath = vscode.Uri.joinPath(dirPath, fileName).fsPath;
 	let newContent = null;
 	// 检查文件是否已存在
 	if (!fs.existsSync(absolutePath)) {

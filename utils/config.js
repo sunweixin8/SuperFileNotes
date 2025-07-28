@@ -16,5 +16,5 @@ if (workspaceFolders) {
 module.exports = {
 	jsonName: 'file-note.json', //存储信息的json文件
 	projectPath: projectPath, //项目路径
-	projectPathFull: projectPath + '\\', //完整项目路径
+	projectPathFull: vscode.Uri.joinPath(vscode.Uri.file(projectPath),'//').fsPath, //完整项目路径
 };
