@@ -12,16 +12,14 @@ async function writeFile(noteObj) {
 	const rootPath = $config.projectPathFull;
 
 	// 判断 .vscode 文件夹是否存在
-	let dirPath = rootPath + '.vscode';
-	if (!fs.existsSync(dirPath)) {
+	let dirPath = vscode.Uri.joinPath(vscode.Uri.file(rootPath) , '.vscode');
+	if (!fs.existsSync(dirPath.fsPath)) {
 		// 创建 .vscode 文件夹
-		fs.mkdirSync(dirPath);
+		fs.mkdirSync(dirPath.fsPath);
 	}
 
 	// 拼接完整的文件路径
-	const filePath = vscode.Uri.file(rootPath + '.vscode/' + fileName);
-
-	let absolutePath = filePath.fsPath;
+	let absolutePath = vscode.Uri.joinPath(dirPath, fileName).fsPath;
 	let newContent = null;
 	// 检查文件是否已存在
 	if (fs.existsSync(absolutePath)) {
